@@ -18,12 +18,17 @@ import {
   constants,
   dummyData,
 } from "../../constants";
-import GiftModal from "./GiftModal";
-import MessageModal from "./MessageModal";
+// import GiftModal from "./GiftModal";
+// import MessageModal from "./MessageModal";
 import { connect } from "react-redux";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { scale, verticalScale } from "react-native-size-matters";
-import { IconButton, Header, TextIconButton } from "../../components";
+import {
+  IconButton,
+  Header,
+  TextIconButton,
+  FormInput,
+} from "../../components";
 import { NavigationContext } from "react-navigation";
 
 const Notification = ({ navigation, notifications }) => {
@@ -165,26 +170,6 @@ const Notification = ({ navigation, notifications }) => {
     );
   }
 
-  function renderLoader() {
-    // setLoaded(false);
-    setTimeout(() => {
-      setLoaded(true);
-    }, 8000);
-
-    return loaded ? (
-      <MessageModal
-        isVisible={showMessageModal}
-        onClose={() => {
-          setShowMessageModal(false);
-        }}
-        navigation={navigation}
-        // fetchProfiles={fetchProfiles}
-      />
-    ) : (
-      <Loader />
-    );
-  }
-
   return (
     <View
       style={{
@@ -192,13 +177,13 @@ const Notification = ({ navigation, notifications }) => {
         // marginHorizontal: SIZES.padding,
         // paddingTop: SIZES.padding,
         backgroundColor: COLORS.main,
+        paddingHorizontal: SIZES.padding,
       }}
     >
       {renderHeader()}
 
       <Text
         style={{
-          paddingHorizontal: SIZES.padding,
           fontSize: 25,
           lineHeight: 40,
           fontFamily: "Poppins-Bold",
@@ -210,13 +195,13 @@ const Notification = ({ navigation, notifications }) => {
       <FormInput
         placeholder="Search"
         autoCompleteType="password"
-        secureTextEntry={!showPass}
+        // secureTextEntry={!showPass}
         inputStyle={{
           borderRadius: SIZES.radius,
           // borderWidth: 1,
           justifyContent: "center",
           alignItems: "center",
-          paddingHorizontal: SIZES.base * 4,
+          // paddingHorizontal: SIZES.base * 4,
           fontFamily: "Poppins-Regular",
           fontSize: 14,
           lineHeight: 21,
@@ -308,7 +293,7 @@ const Notification = ({ navigation, notifications }) => {
                   backgroundColor: "white",
                   justifyContent: "center",
                   alignItems: "center",
-                  paddingHorizontal: SIZES.padding,
+                  // paddingHorizontal: SIZES.padding,
                   borderWidth: 1,
                   borderColor: COLORS.lightGray,
                 }}
@@ -338,29 +323,12 @@ const Notification = ({ navigation, notifications }) => {
         }}
       />
 
-      {/* Password Modal */}
-      {showGiftModal && (
-        <GiftModal
-          isVisible={showGiftModal}
-          onClose={() => {
-            setShowGiftModal(false);
-          }}
-          showMessage={() => setShowMessageModal(true)}
-          navigation={navigation}
-
-          // fetchProfiles={fetchProfiles}
-        />
-      )}
-
-      {/* Message Modal */}
-      {showMessageModal && renderLoader()}
-
       {
         <FlatList
           data={dummyData.notifications}
           contentContainerStyle={{
             backgroundColor: "white",
-            marginHorizontal: SIZES.padding,
+            // marginHorizontal: SIZES.padding,
             padding: SIZES.base,
             borderRadius: SIZES.radius,
             // marginBottom: SIZES.base,

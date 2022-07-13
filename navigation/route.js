@@ -43,4 +43,4 @@ function Routes() {
   );
 }
 
-export { StackNavigation, Routes };
+export {  Routes };
