@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+   
+    <!-- <ImageView 
+    android:layout_width="match_parent" 
+    android:layout_height="match_parent" android:src="@drawable/thrybe_launchscreen_enhanced" android:scaleType="centerCrop" /> -->
+
+    <gradient 
+    android:angle="45"
+    android:startColor="#AC408D"
+    android:centerColor="#AC408D"
+    android:endColor="#AC408D"
+    android:type="linear"/>
+           
+
+
+
+</shape>
+
+
+
+
