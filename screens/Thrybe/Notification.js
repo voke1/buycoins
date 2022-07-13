@@ -102,73 +102,6 @@ const Notification = ({ navigation, notifications }) => {
     },
   ];
 
-  function renderHeader() {
-    return (
-      <Header
-        // title="Discover"
-        // subtitle="Lagos, NG"
-        containerStyle={{
-          justifyContent: "center",
-          alignItems: "center",
-          height: 70,
-          paddingHorizontal: SIZES.padding,
-        }}
-        titleStyle={{
-          fontSize: 18,
-          lineHeight: 27,
-          fontFamily: "Poppins-Bold",
-        }}
-        rightComponent={
-          <IconButton
-            icon={icons.search}
-            containerStyle={{
-              width: 40,
-              height: 40,
-              justifyContent: "center",
-              alignItems: "center",
-              // borderWidth: 1,
-              // borderRadius: SIZES.radius,
-              // borderColor: "gray",
-              // backgroundColor: "white",
-            }}
-            iconStyle={{
-              width: 15,
-              height: 15,
-              tintColor: COLORS.black,
-            }}
-            onPress={() => console.log("RSSED")}
-          />
-        }
-        leftComponent={
-          <TextIconButton
-            iconPosition="LEFT"
-            label="Back"
-            containerStyle={{
-              justifyContent: "flex-start",
-              backgroundColor: "transparent",
-              paddingHorizontal: 0,
-              marginVertical: SIZES.base,
-            }}
-            labelStyle={{
-              color: COLORS.primary,
-              fontFamily: "Poppins-Bold",
-              lineHeight: 18,
-              fontSize: 12,
-              paddingHorizontal: SIZES.base,
-            }}
-            icon={icons.backCarat}
-            iconStyle={{
-              tintColor: COLORS.primary,
-              width: SIZES.base,
-            }}
-            onPress={() => {
-              navigation.goBack();
-            }}
-          />
-        }
-      />
-    );
-  }
 
   return (
     <View
@@ -180,7 +113,8 @@ const Notification = ({ navigation, notifications }) => {
         paddingHorizontal: SIZES.padding,
       }}
     >
-      {renderHeader()}
+      {/* {renderHeader()} */}
+
 
       <Text
         style={{
@@ -190,7 +124,7 @@ const Notification = ({ navigation, notifications }) => {
           color: COLORS.primary,
         }}
       >
-        Notification
+        Home
       </Text>
       <FormInput
         placeholder="Search"
@@ -207,7 +141,7 @@ const Notification = ({ navigation, notifications }) => {
           lineHeight: 21,
         }}
         containerStyle={{
-          flex: 1,
+          // flex: 1,
           justifyContent: "center",
           alignItems: "center",
           marginRight: SIZES.base,
@@ -227,25 +161,7 @@ const Notification = ({ navigation, notifications }) => {
         onChange={(value) =>
           setUserState({ ...userState, ...{ password: value } })
         }
-        appendComponent={
-          <TouchableOpacity
-            style={{
-              width: SIZES.radius,
-              alignItems: "flex-end",
-              justifyContent: "center",
-            }}
-            //   onPress={() => setShowPass(!showPass)}
-          >
-            <Image
-              style={{
-                height: 20,
-                width: 20,
-                tintColor: COLORS.black,
-              }}
-              source={icons.microphone}
-            />
-          </TouchableOpacity>
-        }
+       
         prependComponent={
           <TouchableOpacity
             style={{
@@ -273,7 +189,10 @@ const Notification = ({ navigation, notifications }) => {
         horizontal
         contentContainerStyle={{
           height: SIZES.padding * 3,
-          paddingHorizontal: SIZES.padding,
+          // backgroundColor: "red",
+          // justifyContent: "center",
+          alignItems: "center"
+          // paddingHorizontal: SIZES.padding,
         }}
         showsHorizontalScrollIndicator={false}
         renderItem={({ item, index }) => {
@@ -285,6 +204,7 @@ const Notification = ({ navigation, notifications }) => {
             >
               <View
                 style={{
+                  // flex: 1,
                   height: 35,
                   // width: 80,
                   marginHorizontal: SIZES.base,
