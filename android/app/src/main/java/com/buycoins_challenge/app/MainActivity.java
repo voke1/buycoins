@@ -1,4 +1,4 @@
-package com.buycoins.app;
+package com.buycoins_challenge.app;
 
 import android.os.Bundle; // here
 
@@ -14,7 +14,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "buycoins";
+    return "BuycoinsChallenge";
   }
 
   @Override

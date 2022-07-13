@@ -2,6 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
 import { createSharedElementStackNavigator } from "react-navigation-shared-element";
 import { Notification } from "../screens";
+import { StatusBar } from "react-native";
 const Stack = createSharedElementStackNavigator();
 // const Stack = createStackNavigator();
 // const Drawer = createDrawerNavigator();
@@ -11,18 +12,14 @@ function Routes() {
 
   return (
     <NavigationContainer>
-      {/* <StatusBar
+      <StatusBar
         barStyle="light-content"
-        // dark-content, light-content and default
         hidden={true}
-        //To hide statusBar
-        // backgroundColor={COLORS.primary}
-        backgroundColor="#9932cc"
-        //Background color of statusBar only works for Android
-        // translucent={true}
-        //allowing light, but not detailed shapes
+       
+        backgroundColor="#9A7BD5"
+       
         networkActivityIndicatorVisible={true}
-      /> */}
+      />
 
       <Stack.Navigator
         screenOptions={{

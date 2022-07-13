@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   Alert,
   TouchableOpacity,
+  StatusBar,
 } from "react-native";
 import Loader from "../../components/Loader";
 import {
@@ -29,23 +30,20 @@ import {
   TextIconButton,
   FormInput,
 } from "../../components";
-import { NavigationContext } from "react-navigation";
 
 const Notification = ({ navigation, notifications }) => {
-  const [notification, setNotification] = React.useState("");
-  console.log("NOTIFICATION CHECK: ", notifications);
-  const [showGiftModal, setShowGiftModal] = React.useState(false);
-  const [showMessageModal, setShowMessageModal] = React.useState(false);
-  const [loaded, setLoaded] = React.useState(false);
+  const [search, setSearch] = React.useState("");
+  const [transactions, setTransactions] = React.useState(dummyData.notifications)
 
-  React.useEffect(() => {
-    setLoaded(false);
+  React.useEffect(() => {}, []);
 
-    // setTimeout(() => {
-    //   setNotification(notifications);
-    // }, 2000);
-  }, []);
-
+  const searchTransactions = (value)=> {
+    if(value){
+      const newTransactions = transactions.filter((item)=> {
+        // itemData = 
+      })
+    }
+  }
   const Section = ({ title, onPress, children }) => {
     return (
       <View>
@@ -83,25 +81,28 @@ const Notification = ({ navigation, notifications }) => {
     {
       id: 12,
       title: "All",
-      number: 6,
     },
     {
       id: "2",
-      title: "New",
-      number: 6,
+      title: "Deposits",
     },
     {
       id: "3",
-      title: "Nearby",
-      number: 0,
+      title: "Withdrawals",
     },
     {
       id: "4",
-      title: "Recent Activity",
-      number: 6,
+      title: "Pending",
+    },
+    {
+      id: "5",
+      title: "Success",
+    },
+    {
+      id: "6",
+      title: "Failed",
     },
   ];
-
 
   return (
     <View
@@ -111,10 +112,16 @@ const Notification = ({ navigation, notifications }) => {
         // paddingTop: SIZES.padding,
         backgroundColor: COLORS.main,
         paddingHorizontal: SIZES.padding,
+        paddingVertical: SIZES.padding,
       }}
     >
       {/* {renderHeader()} */}
-
+      <StatusBar
+        barStyle="light-content"
+        hidden={true}
+        backgroundColor="#9A7BD5"
+        networkActivityIndicatorVisible={true}
+      />
 
       <Text
         style={{
@@ -124,12 +131,11 @@ const Notification = ({ navigation, notifications }) => {
           color: COLORS.primary,
         }}
       >
-        Home
+        Transactions
       </Text>
       <FormInput
-        placeholder="Search"
-        autoCompleteType="password"
-        // secureTextEntry={!showPass}
+        placeholder="Search transactions"
+        value={search}
         inputStyle={{
           borderRadius: SIZES.radius,
           // borderWidth: 1,
@@ -141,27 +147,18 @@ const Notification = ({ navigation, notifications }) => {
           lineHeight: 21,
         }}
         containerStyle={{
-          // flex: 1,
           justifyContent: "center",
           alignItems: "center",
           marginRight: SIZES.base,
         }}
-        // label={"Confirm password"}
         inputContainerStyle={{
-          // marginTop: SIZES.base,
-          // borderRadius: SIZES.radius * 3,
           borderWidth: 1,
           borderColor: COLORS.lightGray,
-
-          // // flex: 1,
           justifyContent: "center",
           alignItems: "center",
           height: 51,
         }}
-        onChange={(value) =>
-          setUserState({ ...userState, ...{ password: value } })
-        }
-       
+        onChange={(value) => searchTransactions(value)}
         prependComponent={
           <TouchableOpacity
             style={{
@@ -188,56 +185,36 @@ const Notification = ({ navigation, notifications }) => {
         keyExtractor={(item) => `${item.id}`}
         horizontal
         contentContainerStyle={{
-          height: SIZES.padding * 3,
-          // backgroundColor: "red",
-          // justifyContent: "center",
-          alignItems: "center"
-          // paddingHorizontal: SIZES.padding,
+          justifyContent: "center",
+          alignItems: "center",
         }}
         showsHorizontalScrollIndicator={false}
         renderItem={({ item, index }) => {
           return (
             <TouchableOpacity
               style={{
-                justifyContent: "flex-end",
+                height: 35,
+                marginHorizontal: SIZES.base,
+                marginVertical: SIZES.padding,
+                paddingHorizontal: SIZES.base * 2,
+                borderRadius: 50,
+                backgroundColor: "white",
+                justifyContent: "center",
+                alignItems: "center",
+                borderWidth: 1,
+                borderColor: COLORS.lightGray,
               }}
             >
-              <View
+              <Text
                 style={{
-                  // flex: 1,
-                  height: 35,
-                  // width: 80,
-                  marginHorizontal: SIZES.base,
-                  borderRadius: 50,
-                  flexDirection: "row",
-                  backgroundColor: "white",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  // paddingHorizontal: SIZES.padding,
-                  borderWidth: 1,
-                  borderColor: COLORS.lightGray,
+                  paddingRight: SIZES.base,
+                  fontFamily: "Poppins-Regular",
+                  fontSize: 12,
+                  lineHeight: 18,
                 }}
               >
-                <Text
-                  style={{
-                    paddingRight: SIZES.base,
-                    fontFamily: "Poppins-Regular",
-                    fontSize: 12,
-                    lineHeight: 18,
-                  }}
-                >
-                  {item.title}
-                </Text>
-                <Text
-                  style={{
-                    fontFamily: "Poppins-Regular",
-                    fontSize: 12,
-                    lineHeight: 18,
-                  }}
-                >
-                  {item.number}
-                </Text>
-              </View>
+                {item.title}
+              </Text>
             </TouchableOpacity>
           );
         }}
@@ -245,7 +222,7 @@ const Notification = ({ navigation, notifications }) => {
 
       {
         <FlatList
-          data={dummyData.notifications}
+          data={transactions}
           contentContainerStyle={{
             backgroundColor: "white",
             // marginHorizontal: SIZES.padding,
@@ -308,7 +285,8 @@ const Notification = ({ navigation, notifications }) => {
                             height: 60,
                             width: 60,
                             borderRadius: 70,
-                            backgroundColor: "rgba(132,42,131,0.4)",
+                            backgroundColor: "rgba(154,123,213,0.5)",
+
                             alignItems: "center",
                             justifyContent: "center",
                           }}
@@ -327,14 +305,9 @@ const Notification = ({ navigation, notifications }) => {
 
                         <View
                           style={{
-                            alignItems: "center",
                             justifyContent: "space-between",
-                            // marginLeft: SIZES.base,
-                            // width: "80%",
-                            flexDirection: "row",
                             flex: 1,
-                            paddingHorizontal: SIZES.base,
-                            // backgroundColor: "red",
+                            paddingHorizontal: SIZES.padding,
                           }}
                         >
                           <Text
@@ -345,18 +318,28 @@ const Notification = ({ navigation, notifications }) => {
                               marginRight: SIZES.base,
                             }}
                           >
-                            {`${item.title}`}
+                            Name: {`${item.name}`}
                           </Text>
-                        </View>
-                        <View>
+
                           <Text
                             style={{
-                              fontSize: 10,
-                              lineHeight: 20,
-                              fontFamily: "Poppins-Bold",
+                              fontSize: 12,
+                              lineHeight: 18,
+                              fontFamily: "Poppins-Regular",
+                              marginRight: SIZES.base,
                             }}
                           >
-                            {item.time}
+                            Type: {`${item.type}`}
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              lineHeight: 18,
+                              fontFamily: "Poppins-Regular",
+                              marginRight: SIZES.base,
+                            }}
+                          >
+                            Status: {`${item.status}`}
                           </Text>
                         </View>
                       </TouchableOpacity>

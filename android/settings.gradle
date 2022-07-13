@@ -1,4 +1,4 @@
-rootProject.name = 'buycoins'
+rootProject.name = 'BuycoinsChallenge'
 include ':react-native-shared-element'
 project(':react-native-shared-element').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-shared-element/android')
 include ':react-native-shared-element'
