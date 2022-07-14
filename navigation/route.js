@@ -4,8 +4,7 @@ import { StatusBar } from "react-native";
 import { createSharedElementStackNavigator } from "react-navigation-shared-element";
 import { Transactions } from "../screens";
 const Stack = createSharedElementStackNavigator();
-// const Stack = createStackNavigator();
-// const Drawer = createDrawerNavigator();
+
 
 function Routes() {
   const [userLoggedIn, setUserLoggedIn] = React.useState("");

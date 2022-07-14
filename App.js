@@ -5,7 +5,6 @@ import React from "react";
 // import Register from "./screens/Authentication/Register";
 import SplashScreen from "react-native-splash-screen";
 import { Provider } from "react-redux";
-import store from "./stores/store";
 import {Routes} from "./navigation/route";
 import { getUserData, setUserData } from "./utils/Utils";
 import { saveUserData } from "./stores/account/accountActions";
@@ -37,9 +36,9 @@ export const App = () => {
   }, []);
 
   return (
-    <Provider store={store}>
+   
       <Routes />
-    </Provider>
+    
   );
 };
 
