@@ -55,20 +55,6 @@ Buycoins application is developed using React Native Node js and Express js. It 
     $ npm react-native run-android OR yarn react-native run-android
 ```
 
-- Start server
-
-```
-    $ npm json-graphql-server graphql-server.json --p 5000
-```
-
-OR
-
-```
-    $ yarn json-graphql-server graphql-server.json --p 5000
-```
-
-json-graphql-server graphql-server.json --p 5000
-
 ## Author
 
 Voke Olomu
