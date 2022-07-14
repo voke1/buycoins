@@ -1,6 +1,7 @@
 # Helicarrier Challenge App: Buycoins
 
-This is the solution to the engineering Challenge from Helicarrier. Please note that app has been fully tested on Android; Kindly download and install apk here to test app: https://drive.google.com/file/d/1nR7VathvQi0kWgG_JKhLl_5rhfrcxZRc/view?usp=sharing
+This is the solution to the engineering Challenge from Helicarrier. Please note that app has been fully tested on Android; Kindly download and install apk here to test app: https://drive.google.com/file/d/1_WJWCdBaNekSLhmD3Z3y0DlHHAJLEiL_/view?usp=sharing
+
 
 ## Features
 
@@ -17,7 +18,16 @@ This is the solution to the engineering Challenge from Helicarrier. Please note 
 
 ## Deployment
 
-- Buycoins is bundled and uploaded to google drive. Use this link https://drive.google.com/file/d/1nR7VathvQi0kWgG_JKhLl_5rhfrcxZRc/view?usp=sharing
+- Buycoins is bundled and uploaded to google drive. Use this link: https://drive.google.com/file/d/1_WJWCdBaNekSLhmD3Z3y0DlHHAJLEiL_/view?usp=sharing
+
+
+## Screenshots
+
+![alt text](https://github.com/voke1/buycoins/blob/master/screenshots/launchScreen.jpeg?raw=true)
+
+
+![alt text](https://github.com/voke1/buycoins/blob/master/screenshots/transaction.jpeg?raw=true)
+
 
 ## APP Installation and Usage
 
