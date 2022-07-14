@@ -1,4 +1,4 @@
 // ## Buycoins
-import Notification from "./Thrybe/Notification";
+import Transactions from "./Transaction/Transactions";
 
-export { Notification };
+export { Transactions };

@@ -10,6 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@apollo/client": "^3.6.9",
     "@ptomasroos/react-native-multi-slider": "^2.2.2",
     "@react-native-async-storage/async-storage": "^1.15.13",
     "@react-native-community/clipboard": "^1.5.1",
@@ -32,7 +33,9 @@
     "axios": "^0.19.0",
     "flutterwave-react-native": "^1.0.2",
     "global": "^4.4.0",
+    "graphql": "^16.5.0",
     "jetifier": "^2.0.0",
+    "json-graphql-server": "^2.3.1",
     "moment": "^2.29.1",
     "native-base": "^2.13.8",
     "prop-types": "^15.7.2",
