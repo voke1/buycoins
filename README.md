@@ -19,7 +19,7 @@ This is the solution to the engineering Challenge from Helicarrier. Please note 
 
 - Buycoins is bundled and uploaded to google drive. Use this link https://drive.google.com/file/d/1nR7VathvQi0kWgG_JKhLl_5rhfrcxZRc/view?usp=sharing
 
-## API Endpoints: Installation and Usage
+## APP Installation and Usage
 
 Buycoins application is developed using React Native Node js and Express js. It is required these packages are present prior installation. To start with;
 
