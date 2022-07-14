@@ -24,10 +24,13 @@ const Transactions = () => {
   const { error, loading, data } = useQuery(GET_TRANSACTIONS);
  
   React.useEffect(() => {
-   
-      console.log("DATA LOADEDE: ", data);
+    if(data){
 
+      console.log("DATA LOADEDE: ", data);
+  
       searchTransactions();
+    }
+   
     
     // getTransactions();
   }, [data]);
@@ -233,7 +236,7 @@ const Transactions = () => {
       </View>
 
       {/* Transactions list */}
-      {transactions ? (
+      {transactions.length ? (
         <FlatList
           data={transactions}
           contentContainerStyle={{

@@ -50,24 +50,7 @@ export const App = () => {
     link: link,
   });
 
-  //  make a query
-  client
-    .query({
-      query: gql`
-        query {
-          allTransactions {
-            id
-            name
-            status
-            type
-          }
-        }
-      `,
-      variables: {
-        id: 1,
-      },
-    })
-    .then((result) => console.log(result));
+ 
 
   return (
     <ApolloProvider client={client}>
