@@ -2,7 +2,6 @@
 
 This is the solution to the engineering Challenge from Helicarrier. Please note that app has been fully tested on Android; Kindly download and install apk (on Android Device)here to test app: https://drive.google.com/file/d/1_WJWCdBaNekSLhmD3Z3y0DlHHAJLEiL_/view?usp=sharing
 
-
 ## Features
 
 1. User can view Transaction List.
@@ -20,14 +19,11 @@ This is the solution to the engineering Challenge from Helicarrier. Please note 
 
 - Buycoins is bundled and uploaded to google drive. Download and test app on your android phone: https://drive.google.com/file/d/1_WJWCdBaNekSLhmD3Z3y0DlHHAJLEiL_/view?usp=sharing
 
-
 ## Screenshots
 
 ![alt text](https://github.com/voke1/buycoins/blob/master/screenshots/launchScreen.jpeg?raw=true)
 
-
 ![alt text](https://github.com/voke1/buycoins/blob/master/screenshots/transaction.jpeg?raw=true)
-
 
 ## APP Installation and Usage
 

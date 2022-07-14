@@ -1,6 +1,4 @@
-import {
-  useQuery
-} from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import React from "react";
 import {
   ActivityIndicator,
@@ -10,7 +8,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import { FormInput } from "../../components";
 import { COLORS, dummyData, icons, SIZES } from "../../constants";
@@ -22,23 +20,21 @@ const Transactions = () => {
   const [filteredTransactions, setFilteredTransactions] = React.useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = React.useState("");
   const { error, loading, data } = useQuery(GET_TRANSACTIONS);
- 
-  React.useEffect(() => {
-    if(data){
 
+  React.useEffect(() => {
+    if (data) {
       console.log("DATA LOADEDE: ", data);
-  
+
       searchTransactions();
     }
-   
-    
+
     // getTransactions();
   }, [data]);
 
   console.log("DATA LOAD:", data);
   const filterTransactions = (value) => {
     if (value) {
-      const newTransactions = dummyData.transactions.filter((item) => {
+      const newTransactions = data.Transactions.filter((item) => {
         console.log("ITEM: ", item.status);
         return item.status == value || item.type == value;
       });
@@ -46,13 +42,13 @@ const Transactions = () => {
       massageTransactions(newTransactions);
     }
     if (value == "All") {
-      massageTransactions(dummyData.transactions);
+      massageTransactions(data.Transactions);
     }
   };
 
   const searchTransactions = (value) => {
     if (value) {
-      const newTransactions = dummyData.transactions.filter((item) => {
+      const newTransactions = data.Transactions.filter((item) => {
         console.log("ITEM: ", item);
         itemData = item.name ? item.name.toUpperCase() : "".toUpperCase();
         const textData = value.toUpperCase();
@@ -61,42 +57,11 @@ const Transactions = () => {
       console.log("NEW TRANSACTION: ", newTransactions);
       massageTransactions(newTransactions);
     } else {
-      massageTransactions(dummyData.transactions);
+      massageTransactions(data.Transactions);
       // setFilteredTransactions(transactions)
     }
   };
-  const Section = ({ title, onPress, children }) => {
-    return (
-      <View>
-        {/* Header  */}
-        <View
-          style={
-            {
-              // marginTop: 20,
-              // marginBottom: 20,
-            }
-          }
-        >
-          <Text
-            style={{
-              // fontWeight: "bold",
-              color: COLORS.black,
-              textAlign: "left",
-              fontSize: 16,
-              padding: SIZES.padding,
-              lineHeight: 24,
-              fontFamily: "Poppins-Medium",
-            }}
-          >
-            {title}
-          </Text>
-        </View>
-
-        {/* Content  */}
-        {children}
-      </View>
-    );
-  };
+ 
 
   const massageTransactions = (data) => {
     // this gives an object with dates as keys
@@ -119,6 +84,39 @@ const Transactions = () => {
 
     setTransactions(massageData);
   };
+
+   const Section = ({ title, onPress, children }) => {
+     return (
+       <View>
+         {/* Header  */}
+         <View
+           style={
+             {
+               // marginTop: 20,
+               // marginBottom: 20,
+             }
+           }
+         >
+           <Text
+             style={{
+               // fontWeight: "bold",
+               color: COLORS.black,
+               textAlign: "left",
+               fontSize: 16,
+               padding: SIZES.padding,
+               lineHeight: 24,
+               fontFamily: "Poppins-Medium",
+             }}
+           >
+             {title}
+           </Text>
+         </View>
+
+         {/* Content  */}
+         {children}
+       </View>
+     );
+   };
 
   return (
     <View

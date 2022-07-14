@@ -5,8 +5,9 @@ export const GET_TRANSACTIONS = gql`
            Transactions {
              id
              name
-             status
              type
+             status
+             date
            }
          }
        `;
