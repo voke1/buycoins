@@ -45,8 +45,6 @@ const FormInput = ({
           flexDirection: "row",
           height: SIZES.height > 800 ? SIZES.radius *2 : SIZES.radius*2,
           paddingHorizontal: moderateScale(SIZES.padding),
-          // marginTop: SIZES.height > 800 ? SIZES.base : 0,
-          // borderRadius: moderateScale(SIZES.radius),
           backgroundColor: COLORS.white,
           ...inputContainerStyle,
         }}
@@ -68,7 +66,6 @@ const FormInput = ({
           autoCapitalize={autoCapitalize}
           maxLength={maxLength}
           onChangeText={(text) => onChange(text)}
-          multiline={multiline}
           editable={editable}
           
         />

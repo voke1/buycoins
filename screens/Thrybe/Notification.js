@@ -33,17 +33,42 @@ import {
 
 const Notification = ({ navigation, notifications }) => {
   const [search, setSearch] = React.useState("");
-  const [transactions, setTransactions] = React.useState(dummyData.notifications)
+  const [transactions, setTransactions] = React.useState([]);
+  const [filteredTransactions, setFilteredTransactions] = React.useState([]);
 
-  React.useEffect(() => {}, []);
+  React.useEffect(() => {
+    searchTransactions();
+  }, []);
 
-  const searchTransactions = (value)=> {
-    if(value){
-      const newTransactions = transactions.filter((item)=> {
-        // itemData = 
-      })
+  const filterTransactions = (value) => {
+    if (value) {
+      const newTransactions = dummyData.transactions.filter((item) => {
+        console.log("ITEM: ", item.status);
+        return item.status == value || item.type == value;
+      });
+      console.log("NEW TRANSACTIONS: ", newTransactions);
+      massageTransactions(newTransactions);
     }
-  }
+    if (value == "All") {
+      massageTransactions(dummyData.transactions);
+    }
+  };
+
+  const searchTransactions = (value) => {
+    if (value) {
+      const newTransactions = dummyData.transactions.filter((item) => {
+        console.log("ITEM: ", item);
+        itemData = item.name ? item.name.toUpperCase() : "".toUpperCase();
+        const textData = value.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      console.log("NEW TRANSACTION: ", newTransactions);
+      massageTransactions(newTransactions);
+    } else {
+      massageTransactions(dummyData.transactions);
+      // setFilteredTransactions(transactions)
+    }
+  };
   const Section = ({ title, onPress, children }) => {
     return (
       <View>
@@ -84,11 +109,11 @@ const Notification = ({ navigation, notifications }) => {
     },
     {
       id: "2",
-      title: "Deposits",
+      title: "Deposit",
     },
     {
       id: "3",
-      title: "Withdrawals",
+      title: "Withdrawal",
     },
     {
       id: "4",
@@ -103,6 +128,30 @@ const Notification = ({ navigation, notifications }) => {
       title: "Failed",
     },
   ];
+
+  const massageTransactions = (data) => {
+    // this gives an object with dates as keys
+    const groups = data.reduce((groups, transaction) => {
+      const date = transaction.date.split("T")[0];
+      if (!groups[date]) {
+        groups[date] = [];
+      }
+      groups[date].push(transaction);
+      return groups;
+    }, {});
+
+    // Edit: to add it in the array format instead
+    const massageData = Object.keys(groups).map((date) => {
+      return {
+        date,
+        data: groups[date],
+      };
+    });
+
+    setTransactions(massageData);
+  };
+
+  // console.log(massageTransactions);
 
   return (
     <View
@@ -134,8 +183,8 @@ const Notification = ({ navigation, notifications }) => {
         Transactions
       </Text>
       <FormInput
-        placeholder="Search transactions"
-        value={search}
+        placeholder="Search transactions..."
+        // value={search}
         inputStyle={{
           borderRadius: SIZES.radius,
           // borderWidth: 1,
@@ -158,7 +207,10 @@ const Notification = ({ navigation, notifications }) => {
           alignItems: "center",
           height: 51,
         }}
-        onChange={(value) => searchTransactions(value)}
+        onChange={(value) => {
+          console.log("VALUE: ", value);
+          searchTransactions(value);
+        }}
         prependComponent={
           <TouchableOpacity
             style={{
@@ -187,6 +239,7 @@ const Notification = ({ navigation, notifications }) => {
         contentContainerStyle={{
           justifyContent: "center",
           alignItems: "center",
+          // height: 60,
         }}
         showsHorizontalScrollIndicator={false}
         renderItem={({ item, index }) => {
@@ -204,6 +257,7 @@ const Notification = ({ navigation, notifications }) => {
                 borderWidth: 1,
                 borderColor: COLORS.lightGray,
               }}
+              onPress={() => filterTransactions(item.title)}
             >
               <Text
                 style={{
@@ -221,33 +275,34 @@ const Notification = ({ navigation, notifications }) => {
       />
 
       {
+        // <View style={{ height: SIZES.height / 1.3 }}>
         <FlatList
           data={transactions}
           contentContainerStyle={{
             backgroundColor: "white",
-            // marginHorizontal: SIZES.padding,
             padding: SIZES.base,
             borderRadius: SIZES.radius,
-            // marginBottom: SIZES.base,
-            // backgroundColor: "red",
+            // flex: 1,
           }}
           showsVerticalScrollIndicator={false}
-          keyExtractor={(item) => `${item.id}`}
+          keyExtractor={(item) => `${item.date}`}
           renderItem={({ item }) => {
             return (
               <View
                 style={{
-                  // backgroundColor: "white",
+                  // backgroundColor: "red",
                   marginTop: 5,
                 }}
               >
                 {/* <View style={{}}> */}
-                <Section title={item.title} />
+                <Section title={item.date} />
                 {/* </View> */}
                 <FlatList
                   data={item.data}
-                  style={{
+                  keyExtractor={(item) => `${item.id}`}
+                  contentContainerStyle={{
                     justifyContent: "flex-start",
+                    // flex: 1,
                   }}
                   renderItem={({ item, index }) => {
                     return (
@@ -269,15 +324,7 @@ const Notification = ({ navigation, notifications }) => {
                           flex: 1,
                         }}
                         onPress={() => {
-                          if (item.type == "gift") {
-                            return setShowGiftModal(true);
-                          } else if (item.type == "profile") {
-                            return navigation.navigate("Stack", {
-                              screen: "UserDetailScreen",
-                            });
-                          } else {
-                            return console.log("PRESSED");
-                          }
+                          console.log("PRESSED");
                         }}
                       >
                         <View
@@ -293,7 +340,7 @@ const Notification = ({ navigation, notifications }) => {
                         >
                           <Image
                             resizeMode="contain"
-                            source={item.icon}
+                            source={icons.deposit}
                             style={{
                               height: "50%",
                               width: "50%",
@@ -352,6 +399,7 @@ const Notification = ({ navigation, notifications }) => {
           }}
           ListFooterComponent={<View style={{ height: 40 }} />}
         />
+        // </View>
       }
 
       {/* List  */}
