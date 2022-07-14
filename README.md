@@ -1,6 +1,6 @@
 # Helicarrier Challenge App: Buycoins
 
-This is the solution to the engineering Challenge from Helicarrier. Please note that app has been fully tested on Android; Kindly download and install apk (on Android Device)here to test app: https://drive.google.com/file/d/1_WJWCdBaNekSLhmD3Z3y0DlHHAJLEiL_/view?usp=sharing
+This is the solution to the engineering Challenge from Helicarrier. Please note that app has been fully tested on Android; Kindly download and install apk (on Android Device)here to test app: https://drive.google.com/file/d/15i7pWhItABufnO4FcNRj6aIczjGUBIPw/view?usp=sharing
 
 ## Features
 
@@ -17,7 +17,7 @@ This is the solution to the engineering Challenge from Helicarrier. Please note 
 
 ## Deployment
 
-- Buycoins is bundled and uploaded to google drive. Download and test app on your android phone: https://drive.google.com/file/d/1_WJWCdBaNekSLhmD3Z3y0DlHHAJLEiL_/view?usp=sharing
+- Buycoins is bundled and uploaded to google drive. Download and test app on your android phone: https://drive.google.com/file/d/15i7pWhItABufnO4FcNRj6aIczjGUBIPw/view?usp=sharing
 
 ## Screenshots
 
@@ -27,7 +27,7 @@ This is the solution to the engineering Challenge from Helicarrier. Please note 
 
 ## APP Installation and Usage
 
-Buycoins application is developed using React Native Node js and Express js. It is required these packages are present prior installation. To start with;
+Buycoins application is developed using React Native CLI and GraphQL. Download app (https://drive.google.com/file/d/15i7pWhItABufnO4FcNRj6aIczjGUBIPw/view?usp=sharing). It is required these packages are present prior installation. To start with;
 
 - Clone this repository:
 
