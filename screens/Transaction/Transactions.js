@@ -1,34 +1,32 @@
 import React from "react";
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   StatusBar,
+  StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
 import { COLORS, dummyData, icons, SIZES } from "../../constants";
-// import GiftModal from "./GiftModal";
-// import MessageModal from "./MessageModal";
 import {
   ApolloClient,
+  ApolloProvider,
   from,
   HttpLink,
   InMemoryCache,
   useQuery,
-  gql,
-  ApolloProvider,
 } from "@apollo/client";
-import { GET_TRANSACTIONS } from "../../graphql/queries";
 import { onError } from "@apollo/client/link/error";
-import { connect } from "react-redux";
 import { FormInput } from "../../components";
+import { GET_TRANSACTIONS } from "../../graphql/queries";
 
 const Transactions = () => {
   const [search, setSearch] = React.useState("");
   const [transactions, setTransactions] = React.useState([]);
   const [filteredTransactions, setFilteredTransactions] = React.useState([]);
-
+  const [selectedCategoryId, setSelectedCategoryId] = React.useState("");
   React.useEffect(() => {
     searchTransactions();
   }, []);
@@ -139,132 +137,124 @@ const Transactions = () => {
     setTransactions(massageData);
   };
 
-  // console.log(massageTransactions);
-
   return (
     <ApolloProvider client={client}>
       <View
         style={{
           flex: 1,
-          // marginHorizontal: SIZES.padding,
-          // paddingTop: SIZES.padding,
           backgroundColor: COLORS.main,
           paddingHorizontal: SIZES.padding,
           paddingVertical: SIZES.padding,
         }}
       >
-        {/* {renderHeader()} */}
-        <StatusBar
-          barStyle="light-content"
-          hidden={true}
-          backgroundColor="#9A7BD5"
-          networkActivityIndicatorVisible={true}
-        />
+        <View>
+          <StatusBar
+            barStyle="light-content"
+            hidden={true}
+            backgroundColor="#9A7BD5"
+            networkActivityIndicatorVisible={true}
+          />
 
-        <Text
-          style={{
-            fontSize: 25,
-            lineHeight: 40,
-            fontFamily: "Poppins-Bold",
-            color: COLORS.primary,
-          }}
-        >
-          Transactions
-        </Text>
-        <FormInput
-          placeholder="Search transactions..."
-          // value={search}
-          inputStyle={{
-            borderRadius: SIZES.radius,
-            // borderWidth: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            // paddingHorizontal: SIZES.base * 4,
-            fontFamily: "Poppins-Regular",
-            fontSize: 14,
-            lineHeight: 21,
-          }}
-          containerStyle={{
-            justifyContent: "center",
-            alignItems: "center",
-            marginRight: SIZES.base,
-          }}
-          inputContainerStyle={{
-            borderWidth: 1,
-            borderColor: COLORS.lightGray,
-            justifyContent: "center",
-            alignItems: "center",
-            height: 51,
-          }}
-          onChange={(value) => {
-            console.log("VALUE: ", value);
-            searchTransactions(value);
-          }}
-          prependComponent={
-            <TouchableOpacity
-              style={{
-                width: SIZES.radius,
-                alignItems: "flex-end",
-                justifyContent: "center",
-              }}
-              //   onPress={() => setShowPass(!showPass)}
-            >
-              <Image
-                style={{
-                  height: 20,
-                  width: 20,
-                  tintColor: "gray",
-                }}
-                source={icons.search}
-              />
-            </TouchableOpacity>
-          }
-        />
+          {/* Header Text  */}
+          <Text style={Styles.headerText}>Transactions</Text>
 
-        <FlatList
-          data={dummyData.matchCategory}
-          keyExtractor={(item) => `${item.id}`}
-          horizontal
-          contentContainerStyle={{
-            justifyContent: "center",
-            alignItems: "center",
-            // height: 60,
-          }}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({ item, index }) => {
-            return (
+          {/* Search Bar  */}
+          <FormInput
+            placeholder="Search transactions..."
+            // value={search}
+            inputStyle={{
+              borderRadius: SIZES.radius,
+              // borderWidth: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              // paddingHorizontal: SIZES.base * 4,
+              fontFamily: "Poppins-Regular",
+              fontSize: 14,
+              lineHeight: 21,
+            }}
+            containerStyle={{
+              justifyContent: "center",
+              alignItems: "center",
+              marginRight: SIZES.base,
+              width: "100%",
+            }}
+            inputContainerStyle={{
+              borderWidth: 1,
+              borderColor: COLORS.lightGray,
+              justifyContent: "center",
+              alignItems: "center",
+              height: 51,
+            }}
+            onChange={(value) => {
+              console.log("VALUE: ", value);
+              searchTransactions(value);
+            }}
+            prependComponent={
               <TouchableOpacity
                 style={{
-                  height: 35,
-                  marginHorizontal: SIZES.base,
-                  marginVertical: SIZES.padding,
-                  paddingHorizontal: SIZES.base * 2,
-                  borderRadius: 50,
-                  backgroundColor: "white",
+                  width: SIZES.radius,
+                  alignItems: "flex-end",
                   justifyContent: "center",
-                  alignItems: "center",
-                  borderWidth: 1,
-                  borderColor: COLORS.lightGray,
                 }}
-                onPress={() => filterTransactions(item.title)}
+                //   onPress={() => setShowPass(!showPass)}
               >
-                <Text
+                <Image
                   style={{
-                    paddingRight: SIZES.base,
-                    fontFamily: "Poppins-Regular",
-                    fontSize: 12,
-                    lineHeight: 18,
+                    height: 20,
+                    width: 20,
+                    tintColor: "gray",
+                  }}
+                  source={icons.search}
+                />
+              </TouchableOpacity>
+            }
+          />
+
+          {/* Filter Items */}
+          <FlatList
+            data={dummyData.matchCategory}
+            keyExtractor={(item) => `${item.id}`}
+            horizontal
+            contentContainerStyle={{
+              justifyContent: "center",
+              alignItems: "center",
+              // height: 60,
+            }}
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item, index }) => {
+              return (
+                <TouchableOpacity
+                  style={[
+                    Styles.filterItem,
+                    {
+                      backgroundColor:
+                        selectedCategoryId == item.id ? "#9A7BD5" : "white",
+                    },
+                  ]}
+                  onPress={() => {
+                    setSelectedCategoryId(item.id);
+                    filterTransactions(item.title);
                   }}
                 >
-                  {item.title}
-                </Text>
-              </TouchableOpacity>
-            );
-          }}
-        />
+                  <Text
+                    style={{
+                      paddingRight: SIZES.base,
+                      fontFamily: "Poppins-Bold",
+                      fontSize: 12,
+                      lineHeight: 18,
+                      color: selectedCategoryId == item.id ? "white" : "black",
+                    }}
+                  >
+                    {item.title}
+                  </Text>
+                </TouchableOpacity>
+              );
+            }}
+          />
+        </View>
 
-        {
-          // <View style={{ height: SIZES.height / 1.3 }}>
+        {/* Transactions list */}
+        {transactions ? (
           <FlatList
             data={transactions}
             contentContainerStyle={{
@@ -279,13 +269,11 @@ const Transactions = () => {
               return (
                 <View
                   style={{
-                    // backgroundColor: "red",
                     marginTop: 5,
                   }}
                 >
-                  {/* <View style={{}}> */}
                   <Section title={item.date} />
-                  {/* </View> */}
+
                   <FlatList
                     data={item.data}
                     keyExtractor={(item) => `${item.id}`}
@@ -296,22 +284,7 @@ const Transactions = () => {
                     renderItem={({ item, index }) => {
                       return (
                         <TouchableOpacity
-                          style={{
-                            color: COLORS.white,
-                            backgroundColor: COLORS.white,
-                            flexDirection: "row",
-                            padding: SIZES.base,
-                            // marginVertical: 0.5,
-                            // justifyContent: "center"
-                            alignItems: "center",
-                            height: 85,
-                            // flexWrap: 'wrap'
-                            borderWidth: 1,
-                            borderRadius: SIZES.radius,
-                            marginBottom: SIZES.base,
-                            borderColor: COLORS.lightGray,
-                            flex: 1,
-                          }}
+                          style={Styles.transaction}
                           onPress={() => {
                             console.log("PRESSED");
                           }}
@@ -346,14 +319,7 @@ const Transactions = () => {
                               paddingHorizontal: SIZES.padding,
                             }}
                           >
-                            <Text
-                              style={{
-                                fontSize: 12,
-                                lineHeight: 18,
-                                fontFamily: "Poppins-Regular",
-                                marginRight: SIZES.base,
-                              }}
-                            >
+                            <Text style={Styles.titleText}>
                               <Text
                                 style={{
                                   fontFamily: "Poppins-Bold",
@@ -364,14 +330,7 @@ const Transactions = () => {
                               {`${item.name}`}
                             </Text>
 
-                            <Text
-                              style={{
-                                fontSize: 12,
-                                lineHeight: 18,
-                                fontFamily: "Poppins-Regular",
-                                marginRight: SIZES.base,
-                              }}
-                            >
+                            <Text style={Styles.titleText}>
                               <Text
                                 style={{
                                   fontFamily: "Poppins-Bold",
@@ -381,15 +340,7 @@ const Transactions = () => {
                               </Text>{" "}
                               {`${item.type}`}
                             </Text>
-                            <Text
-                              style={{
-                                fontSize: 12,
-                                lineHeight: 18,
-                                fontFamily: "Poppins-Regular",
-                                marginRight: SIZES.base,
-                                // fontWeight: "bold"
-                              }}
-                            >
+                            <Text style={Styles.titleText}>
                               <Text
                                 style={{
                                   fontFamily: "Poppins-Bold",
@@ -409,13 +360,65 @@ const Transactions = () => {
             }}
             ListFooterComponent={<View style={{ height: 40 }} />}
           />
-          // </View>
-        }
+        ) : (
+          <ActivityIndicator size={"large"} color="#9A7BD5" />
+        )}
 
         {/* List  */}
       </View>
     </ApolloProvider>
   );
 };
+
+const Styles = StyleSheet.create({
+  headerText: {
+    fontSize: 25,
+    lineHeight: 40,
+    fontFamily: "Poppins-Bold",
+    color: COLORS.primary,
+  },
+  filterItem: {
+    height: 35,
+    marginHorizontal: SIZES.base,
+    marginVertical: SIZES.padding,
+    paddingHorizontal: SIZES.base * 2,
+    borderRadius: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: COLORS.lightGray,
+  },
+  transaction: {
+    color: COLORS.white,
+    backgroundColor: COLORS.white,
+    flexDirection: "row",
+    padding: SIZES.base,
+    // marginVertical: 0.5,
+    // justifyContent: "center"
+    alignItems: "center",
+    height: 85,
+    // flexWrap: 'wrap'
+    borderWidth: 1,
+    borderRadius: SIZES.radius,
+    marginBottom: SIZES.base,
+    borderColor: COLORS.lightGray,
+    flex: 1,
+  },
+
+  titleText: {
+    fontSize: 12,
+    lineHeight: 18,
+    fontFamily: "Poppins-Regular",
+    marginRight: SIZES.base,
+    fontSize: 12,
+    lineHeight: 18,
+    fontFamily: "Poppins-Regular",
+    marginRight: SIZES.base,
+    fontSize: 12,
+    lineHeight: 18,
+    fontFamily: "Poppins-Regular",
+    marginRight: SIZES.base,
+  },
+});
 
 export default Transactions;
