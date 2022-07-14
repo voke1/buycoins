@@ -1,28 +1,18 @@
-import React from "react";
-// import { createStackNavigator } from "@react-navigation/stack";
-
-// import Register from "./screens/Authentication/Register";
-import SplashScreen from "react-native-splash-screen";
-import { Provider } from "react-redux";
-import { Routes } from "./navigation/route";
-import { getUserData, setUserData } from "./utils/Utils";
-import { saveUserData } from "./stores/account/accountActions";
-import { fromLeft, fadeIn, fadeOut } from "react-navigation-transitions";
 import {
   ApolloClient,
   ApolloProvider,
   from,
   HttpLink,
-  InMemoryCache,
-  useQuery,
-  gql,
+  InMemoryCache
 } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
-import { GET_TRANSACTIONS } from "./graphql/queries";
-// const Stack = createStackNavigator();
+import React from "react";
+import SplashScreen from "react-native-splash-screen";
+import { API_BASE_URL, token } from "./constants/url";
+import { Routes } from "./navigation/route";
+
 
 export const App = () => {
-  // const [userLoggedIn, setUserLoggedIn] = React.useState("");
   React.useEffect(() => {
     SplashScreen.hide();
   }, []);
@@ -38,9 +28,9 @@ export const App = () => {
   const link = from([
     errorLink,
     new HttpLink({
-      uri: "https://musical-osprey-54.hasura.app/v1/graphql",
+      uri: API_BASE_URL,
       headers: {
-        "x-hasura-admin-secret": "ek9wOMeIhr9bRZTIQqkkZjAkGcN6WMGgd5pd8BFSefRAfGk4g4Yg69R5TasqTLWf"
+        "x-hasura-admin-secret": token
       }
     }),
   ]);
