@@ -1,3 +1,6 @@
+import {
+  useQuery
+} from "@apollo/client";
 import React from "react";
 import {
   ActivityIndicator,
@@ -7,19 +10,10 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
-import { COLORS, dummyData, icons, SIZES } from "../../constants";
-import {
-  ApolloClient,
-  ApolloProvider,
-  from,
-  HttpLink,
-  InMemoryCache,
-  useQuery,
-} from "@apollo/client";
-import { onError } from "@apollo/client/link/error";
 import { FormInput } from "../../components";
+import { COLORS, dummyData, icons, SIZES } from "../../constants";
 import { GET_TRANSACTIONS } from "../../graphql/queries";
 
 const Transactions = () => {
@@ -27,32 +21,18 @@ const Transactions = () => {
   const [transactions, setTransactions] = React.useState([]);
   const [filteredTransactions, setFilteredTransactions] = React.useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = React.useState("");
+  const { error, loading, data } = useQuery(GET_TRANSACTIONS);
+ 
   React.useEffect(() => {
-    searchTransactions();
-  }, []);
+   
+      console.log("DATA LOADEDE: ", data);
 
-  const errorLink = onError(({ graphqlErrors, networkError }) => {
-    if (graphqlErrors) {
-      graphqlErrors.map(({ message, location, path }) => {
-        alert(`Graphql error ${message}`);
-      });
-    }
-  });
+      searchTransactions();
+    
+    // getTransactions();
+  }, [data]);
 
-  const link = from([
-    errorLink,
-    new HttpLink({ uri: "http://localhost:5000/graphql" }),
-  ]);
-
-  const client = new ApolloClient({
-    cache: new InMemoryCache(),
-    link: link,
-  });
-
-  const getTransactions = () => {
-    const { error, loading, data } = useQuery(GET_TRANSACTIONS);
-  };
-
+  console.log("DATA LOAD:", data);
   const filterTransactions = (value) => {
     if (value) {
       const newTransactions = dummyData.transactions.filter((item) => {
@@ -138,235 +118,239 @@ const Transactions = () => {
   };
 
   return (
-    <ApolloProvider client={client}>
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: COLORS.main,
-          paddingHorizontal: SIZES.padding,
-          paddingVertical: SIZES.padding,
-        }}
-      >
-        <View>
-          <StatusBar
-            barStyle="light-content"
-            hidden={true}
-            backgroundColor="#9A7BD5"
-            networkActivityIndicatorVisible={true}
-          />
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: COLORS.main,
+        paddingHorizontal: SIZES.padding,
+        paddingVertical: SIZES.padding,
+      }}
+    >
+      <View>
+        <StatusBar
+          barStyle="light-content"
+          hidden={true}
+          backgroundColor="#9A7BD5"
+          networkActivityIndicatorVisible={true}
+        />
 
-          {/* Header Text  */}
-          <Text style={Styles.headerText}>Transactions</Text>
+        {/* Header Text  */}
+        <Text style={Styles.headerText}>Transactions</Text>
 
-          {/* Search Bar  */}
-          <FormInput
-            placeholder="Search transactions..."
-            // value={search}
-            inputStyle={{
-              borderRadius: SIZES.radius,
-              // borderWidth: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              // paddingHorizontal: SIZES.base * 4,
-              fontFamily: "Poppins-Regular",
-              fontSize: 14,
-              lineHeight: 21,
-            }}
-            containerStyle={{
-              justifyContent: "center",
-              alignItems: "center",
-              marginRight: SIZES.base,
-              width: "100%",
-            }}
-            inputContainerStyle={{
-              borderWidth: 1,
-              borderColor: COLORS.lightGray,
-              justifyContent: "center",
-              alignItems: "center",
-              height: 51,
-            }}
-            onChange={(value) => {
-              console.log("VALUE: ", value);
-              searchTransactions(value);
-            }}
-            prependComponent={
-              <TouchableOpacity
+        {/* Search Bar  */}
+        <FormInput
+          placeholder="Search transactions..."
+          // value={search}
+          inputStyle={{
+            borderRadius: SIZES.radius,
+            // borderWidth: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            // paddingHorizontal: SIZES.base * 4,
+            fontFamily: "Poppins-Regular",
+            fontSize: 14,
+            lineHeight: 21,
+          }}
+          containerStyle={{
+            justifyContent: "center",
+            alignItems: "center",
+            marginRight: SIZES.base,
+            width: "100%",
+          }}
+          inputContainerStyle={{
+            borderWidth: 1,
+            borderColor: COLORS.lightGray,
+            justifyContent: "center",
+            alignItems: "center",
+            height: 51,
+          }}
+          onChange={(value) => {
+            console.log("VALUE: ", value);
+            searchTransactions(value);
+          }}
+          prependComponent={
+            <TouchableOpacity
+              style={{
+                width: SIZES.radius,
+                alignItems: "flex-end",
+                justifyContent: "center",
+              }}
+              //   onPress={() => setShowPass(!showPass)}
+            >
+              <Image
                 style={{
-                  width: SIZES.radius,
-                  alignItems: "flex-end",
-                  justifyContent: "center",
+                  height: 20,
+                  width: 20,
+                  tintColor: "gray",
                 }}
-                //   onPress={() => setShowPass(!showPass)}
+                source={icons.search}
+              />
+            </TouchableOpacity>
+          }
+        />
+
+        {/* Filter Items */}
+        <FlatList
+          data={dummyData.matchCategory}
+          keyExtractor={(item) => `${item.id}`}
+          horizontal
+          contentContainerStyle={{
+            justifyContent: "center",
+            alignItems: "center",
+            // height: 60,
+          }}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item, index }) => {
+            return (
+              <TouchableOpacity
+                style={[
+                  Styles.filterItem,
+                  {
+                    backgroundColor:
+                      selectedCategoryId == item.id ? "#9A7BD5" : "white",
+                  },
+                ]}
+                onPress={() => {
+                  setSelectedCategoryId(item.id);
+                  filterTransactions(item.title);
+                }}
               >
-                <Image
+                <Text
                   style={{
-                    height: 20,
-                    width: 20,
-                    tintColor: "gray",
+                    paddingRight: SIZES.base,
+                    fontFamily: "Poppins-Bold",
+                    fontSize: 12,
+                    lineHeight: 18,
+                    color: selectedCategoryId == item.id ? "white" : "black",
                   }}
-                  source={icons.search}
-                />
+                >
+                  {item.title}
+                </Text>
               </TouchableOpacity>
-            }
-          />
+            );
+          }}
+        />
+      </View>
 
-          {/* Filter Items */}
-          <FlatList
-            data={dummyData.matchCategory}
-            keyExtractor={(item) => `${item.id}`}
-            horizontal
-            contentContainerStyle={{
-              justifyContent: "center",
-              alignItems: "center",
-              // height: 60,
-            }}
-            showsHorizontalScrollIndicator={false}
-            renderItem={({ item, index }) => {
-              return (
-                <TouchableOpacity
-                  style={[
-                    Styles.filterItem,
-                    {
-                      backgroundColor:
-                        selectedCategoryId == item.id ? "#9A7BD5" : "white",
-                    },
-                  ]}
-                  onPress={() => {
-                    setSelectedCategoryId(item.id);
-                    filterTransactions(item.title);
+      {/* Transactions list */}
+      {transactions ? (
+        <FlatList
+          data={transactions}
+          contentContainerStyle={{
+            backgroundColor: "white",
+            padding: SIZES.base,
+            borderRadius: SIZES.radius,
+            // flex: 1,
+          }}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={(item) => `${item.date}`}
+          renderItem={({ item }) => {
+            return (
+              <View
+                style={{
+                  marginTop: 5,
+                }}
+              >
+                <Section title={item.date} />
+
+                <FlatList
+                  data={item.data}
+                  keyExtractor={(item) => `${item.id}`}
+                  contentContainerStyle={{
+                    justifyContent: "flex-start",
+                    // flex: 1,
                   }}
-                >
-                  <Text
-                    style={{
-                      paddingRight: SIZES.base,
-                      fontFamily: "Poppins-Bold",
-                      fontSize: 12,
-                      lineHeight: 18,
-                      color: selectedCategoryId == item.id ? "white" : "black",
-                    }}
-                  >
-                    {item.title}
-                  </Text>
-                </TouchableOpacity>
-              );
-            }}
-          />
-        </View>
+                  renderItem={({ item, index }) => {
+                    return (
+                      <TouchableOpacity
+                        style={Styles.transaction}
+                        onPress={() => {
+                          console.log("PRESSED");
+                        }}
+                      >
+                        <View
+                          style={{
+                            height: 60,
+                            width: 60,
+                            borderRadius: 70,
+                            backgroundColor: "rgba(154,123,213,0.5)",
 
-        {/* Transactions list */}
-        {transactions ? (
-          <FlatList
-            data={transactions}
-            contentContainerStyle={{
-              backgroundColor: "white",
-              padding: SIZES.base,
-              borderRadius: SIZES.radius,
-              // flex: 1,
-            }}
-            showsVerticalScrollIndicator={false}
-            keyExtractor={(item) => `${item.date}`}
-            renderItem={({ item }) => {
-              return (
-                <View
-                  style={{
-                    marginTop: 5,
-                  }}
-                >
-                  <Section title={item.date} />
-
-                  <FlatList
-                    data={item.data}
-                    keyExtractor={(item) => `${item.id}`}
-                    contentContainerStyle={{
-                      justifyContent: "flex-start",
-                      // flex: 1,
-                    }}
-                    renderItem={({ item, index }) => {
-                      return (
-                        <TouchableOpacity
-                          style={Styles.transaction}
-                          onPress={() => {
-                            console.log("PRESSED");
+                            alignItems: "center",
+                            justifyContent: "center",
                           }}
                         >
-                          <View
+                          <Image
+                            resizeMode="contain"
+                            source={icons.deposit}
                             style={{
-                              height: 60,
-                              width: 60,
-                              borderRadius: 70,
-                              backgroundColor: "rgba(154,123,213,0.5)",
-
-                              alignItems: "center",
-                              justifyContent: "center",
+                              height: "50%",
+                              width: "50%",
+                              tintColor: "white",
+                              // borderRadius: 500,
                             }}
-                          >
-                            <Image
-                              resizeMode="contain"
-                              source={icons.deposit}
+                          />
+                        </View>
+
+                        <View
+                          style={{
+                            justifyContent: "space-between",
+                            flex: 1,
+                            paddingHorizontal: SIZES.padding,
+                          }}
+                        >
+                          <Text style={Styles.titleText}>
+                            <Text
                               style={{
-                                height: "50%",
-                                width: "50%",
-                                tintColor: "white",
-                                // borderRadius: 500,
+                                fontFamily: "Poppins-Bold",
                               }}
-                            />
-                          </View>
+                            >
+                              Name:
+                            </Text>{" "}
+                            {`${item.name}`}
+                          </Text>
 
-                          <View
-                            style={{
-                              justifyContent: "space-between",
-                              flex: 1,
-                              paddingHorizontal: SIZES.padding,
-                            }}
-                          >
-                            <Text style={Styles.titleText}>
-                              <Text
-                                style={{
-                                  fontFamily: "Poppins-Bold",
-                                }}
-                              >
-                                Name:
-                              </Text>{" "}
-                              {`${item.name}`}
-                            </Text>
+                          <Text style={Styles.titleText}>
+                            <Text
+                              style={{
+                                fontFamily: "Poppins-Bold",
+                              }}
+                            >
+                              Type:
+                            </Text>{" "}
+                            {`${item.type}`}
+                          </Text>
+                          <Text style={Styles.titleText}>
+                            <Text
+                              style={{
+                                fontFamily: "Poppins-Bold",
+                              }}
+                            >
+                              Status:
+                            </Text>{" "}
+                            {`${item.status}`}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                    );
+                  }}
+                />
+              </View>
+            );
+          }}
+          ListFooterComponent={
+            <View
+              style={{
+                height: 40,
+              }}
+            />
+          }
+        />
+      ) : (
+        <ActivityIndicator size={"large"} color="#9A7BD5" />
+      )}
 
-                            <Text style={Styles.titleText}>
-                              <Text
-                                style={{
-                                  fontFamily: "Poppins-Bold",
-                                }}
-                              >
-                                Type:
-                              </Text>{" "}
-                              {`${item.type}`}
-                            </Text>
-                            <Text style={Styles.titleText}>
-                              <Text
-                                style={{
-                                  fontFamily: "Poppins-Bold",
-                                }}
-                              >
-                                Status:
-                              </Text>{" "}
-                              {`${item.status}`}
-                            </Text>
-                          </View>
-                        </TouchableOpacity>
-                      );
-                    }}
-                  />
-                </View>
-              );
-            }}
-            ListFooterComponent={<View style={{ height: 40 }} />}
-          />
-        ) : (
-          <ActivityIndicator size={"large"} color="#9A7BD5" />
-        )}
-
-        {/* List  */}
-      </View>
-    </ApolloProvider>
+      {/* List  */}
+    </View>
   );
 };
 
